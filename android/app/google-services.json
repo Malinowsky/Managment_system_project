@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "524661298876",
+    "project_id": "erasmusapp-dcd29",
+    "storage_bucket": "erasmusapp-dcd29.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:524661298876:android:480a594ad9d995d7ca62b9",
+        "android_client_info": {
+          "package_name": "com.malinowski.managment_system_project"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBSycfOjkx_Wj5KHINvOO3ULGQh1DmVFew"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
