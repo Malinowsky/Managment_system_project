@@ -1,11 +1,10 @@
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:managment_system_project/app/splash_sreen/splash_screen.dart';
+import 'package:managment_system_project/features/presentation/pages/grades_page/SelectCoursePage.dart';
 import 'package:managment_system_project/features/presentation/pages/home_page.dart';
-import 'package:managment_system_project/features/presentation/pages/info_page.dart';
-import 'package:managment_system_project/features/presentation/pages/login_page.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'features/presentation/pages/enter_pages/login_page.dart';
+import 'features/presentation/pages/enter_pages/splash_sreen/splash_screen.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -14,18 +13,9 @@ void main() async {
   runApp(MyApp());
 }
 
-// void main() async {
-//   WidgetsFlutterBinding.ensureInitialized();
-//   await Firebase.initializeApp(
-//     options: DefaultFirebaseOptions.currentPlatform,
-//   );
-//   runApp(MyApp());
-// }
-
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -57,10 +47,10 @@ class MyApp extends StatelessWidget {
                         fontWeight: FontWeight.w300),
                   ),
         ),
-        home: SplashScreen(
+        home: SplashPage(
           // child: InfoPage(),
           // child: HomePage(),
-          child: LoginPage(),
+          child: HomePage(),
         ));
   }
 }

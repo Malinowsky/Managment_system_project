@@ -15,7 +15,7 @@ class _InfoGestureDetectorState extends State<InfoGestureDetector> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: MediaQuery.of(context).size.width / 2.5,
+      width: MediaQuery.of(context).size.width / 1.5,
       height: MediaQuery.of(context).size.width / 9,
       decoration: BoxDecoration(
         color: Colors.grey.withOpacity(.35),

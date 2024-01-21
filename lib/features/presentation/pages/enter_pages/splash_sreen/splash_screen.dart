@@ -1,16 +1,14 @@
 import 'package:flutter/material.dart';
 
-import '../../features/presentation/pages/login_page.dart';
-
-class SplashScreen extends StatefulWidget {
+class SplashPage extends StatefulWidget {
   final Widget? child;
-  const SplashScreen({super.key, this.child});
+  const SplashPage({super.key, this.child});
 
   @override
-  State<SplashScreen> createState() => _SplashScreenState();
+  State<SplashPage> createState() => _SplashPageState();
 }
 
-class _SplashScreenState extends State<SplashScreen> {
+class _SplashPageState extends State<SplashPage> {
 
   @override
   void initState() {

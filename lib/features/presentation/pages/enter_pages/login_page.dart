@@ -1,24 +1,22 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:managment_system_project/features/firebase_auth_implementation/firebase_auth_services.dart';
-import 'package:managment_system_project/features/presentation/pages/login_page.dart';
+import 'package:managment_system_project/features/presentation/pages/enter_pages/signup_page.dart';
+import 'package:managment_system_project/features/presentation/widgets/form_container_widgets.dart';
 import 'package:managment_system_project/global/common/toast.dart';
+import '../home_page.dart';
 
-import '../widgets/form_container_widgets.dart';
-import 'home_page.dart';
-
-class SignUpPage extends StatefulWidget {
-  const SignUpPage({super.key});
+class LoginPage extends StatefulWidget {
+  const LoginPage({super.key});
 
   @override
-  State<SignUpPage> createState() => _SignUpPageState();
+  State<LoginPage> createState() => _LoginPageState();
 }
 
-class _SignUpPageState extends State<SignUpPage> {
-  bool _isSigningUp = false;
-  final FirebaseAuthService _auth = FirebaseAuthService();
+class _LoginPageState extends State<LoginPage> {
+  bool _isSigning = false;
 
-  TextEditingController _usernameController = TextEditingController();
+  final FirebaseAuthService _auth = FirebaseAuthService();
   TextEditingController _emailController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
 
@@ -33,7 +31,7 @@ class _SignUpPageState extends State<SignUpPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("SignUp Page",style: TextStyle(fontSize: 22,fontWeight: FontWeight.bold,color: Colors.amber),),
+        title: Text("Login Page",style: TextStyle(fontSize: 22,fontWeight: FontWeight.bold,color: Colors.amber),),
       ),
       body: Center(
         child: Padding(
@@ -42,15 +40,10 @@ class _SignUpPageState extends State<SignUpPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                "SignUp:",
+                "Login:",
                 style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
               ),
-              SizedBox(height: 15,),
-              FormContainerWidget(
-                controller: _usernameController,
-                hintText: "Username",
-                isPasswordField: false,
-              ),
+
               SizedBox(height: 15,),
               FormContainerWidget(
                 controller: _emailController,
@@ -66,8 +59,9 @@ class _SignUpPageState extends State<SignUpPage> {
               SizedBox(height: 15,),
               GestureDetector(
                 onTap: (){
-                  _signUp();
-                  showToast(message: "User is successfully created");
+                  _signIn();
+                  showToast(message: "User is successfully sign in");
+
                   // Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
                 },
                 child: Container(
@@ -77,14 +71,15 @@ class _SignUpPageState extends State<SignUpPage> {
                     borderRadius: BorderRadius.circular(10),
                     color: Colors.blue,
                   ),
-                  child: _isSigningUp ? CircularProgressIndicator(color: Colors.white,) : Center(child: Text("SignUp",style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold, color: Colors.white),)),
+                  child:_isSigning? CircularProgressIndicator(color: Colors.white,):Center(child: Text("Login",style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold, color: Colors.white),)),
                 ),
               ),
               SizedBox(height: 15,),
+
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text("Already have an account?"),
+                  Text("Don't have an account?"),
                   SizedBox(
                     width: 5,
                   ),
@@ -92,12 +87,12 @@ class _SignUpPageState extends State<SignUpPage> {
                     onTap: () {
                       Navigator.pushAndRemoveUntil(
                         context,
-                        MaterialPageRoute(builder: (context) => LoginPage()),
+                        MaterialPageRoute(builder: (context) => SignUpPage()),
                             (route) => false,
                       );
                     },
                     child: Text(
-                      "Login",
+                      "Sign Up",
                       style: TextStyle(
                         color: Colors.blue,
                         fontWeight: FontWeight.bold,
@@ -106,7 +101,6 @@ class _SignUpPageState extends State<SignUpPage> {
                   ),
                 ],
               ),
-
             ],
           ),
         ),
@@ -114,28 +108,29 @@ class _SignUpPageState extends State<SignUpPage> {
     );
   }
 
-  void _signUp() async {
+  void _signIn() async {
 
     setState(() {
-      _isSigningUp = true;
+      _isSigning = true;
     });
 
-    String username = _usernameController.text;
     String email = _emailController.text;
     String password = _passwordController.text;
 
-    User? user = await _auth.signUpWithEmailAndPassword(email, password);
+    User? user = await _auth.signInEmailAndPassword(email, password);
 
     setState(() {
-      _isSigningUp = false;
+      _isSigning = false;
     });
+
     if (user != null) {
-      showToast(message: "User is successfully created");
+      showToast(message: "User is successfully signed in");
       Navigator.push(context, new MaterialPageRoute(
           builder: (context) => new HomePage())
       );
     } else {
-      showToast(message: "Some error happend");
+      showToast(message: "some error occured");
     }
   }
 }
+

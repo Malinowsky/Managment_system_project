@@ -1,23 +1,23 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:managment_system_project/features/firebase_auth_implementation/firebase_auth_services.dart';
-import 'package:managment_system_project/features/presentation/pages/signup_page.dart';
-import 'package:managment_system_project/features/presentation/widgets/form_container_widgets.dart';
+import 'package:managment_system_project/features/presentation/pages/enter_pages/login_page.dart';
 import 'package:managment_system_project/global/common/toast.dart';
+import '../../widgets/form_container_widgets.dart';
+import '../home_page.dart';
 
-import 'home_page.dart';
-
-class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+class SignUpPage extends StatefulWidget {
+  const SignUpPage({super.key});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<SignUpPage> createState() => _SignUpPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
-  bool _isSigning = false;
-
+class _SignUpPageState extends State<SignUpPage> {
+  bool _isSigningUp = false;
   final FirebaseAuthService _auth = FirebaseAuthService();
+
+  TextEditingController _usernameController = TextEditingController();
   TextEditingController _emailController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
 
@@ -32,7 +32,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Login Page",style: TextStyle(fontSize: 22,fontWeight: FontWeight.bold,color: Colors.amber),),
+        title: Text("SignUp Page",style: TextStyle(fontSize: 22,fontWeight: FontWeight.bold,color: Colors.amber),),
       ),
       body: Center(
         child: Padding(
@@ -41,10 +41,15 @@ class _LoginPageState extends State<LoginPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                "Login:",
+                "SignUp:",
                 style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
               ),
-
+              SizedBox(height: 15,),
+              FormContainerWidget(
+                controller: _usernameController,
+                hintText: "Username",
+                isPasswordField: false,
+              ),
               SizedBox(height: 15,),
               FormContainerWidget(
                 controller: _emailController,
@@ -60,10 +65,8 @@ class _LoginPageState extends State<LoginPage> {
               SizedBox(height: 15,),
               GestureDetector(
                 onTap: (){
-                  _signIn();
-                  showToast(message: "User is successfully sign in");
-
-                  // Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
+                  _signUp();
+                  showToast(message: "User is successfully created");
                 },
                 child: Container(
                   width: double.infinity,
@@ -72,15 +75,14 @@ class _LoginPageState extends State<LoginPage> {
                     borderRadius: BorderRadius.circular(10),
                     color: Colors.blue,
                   ),
-                  child:_isSigning? CircularProgressIndicator(color: Colors.white,):Center(child: Text("Login",style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold, color: Colors.white),)),
+                  child: _isSigningUp ? CircularProgressIndicator(color: Colors.white,) : Center(child: Text("SignUp",style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold, color: Colors.white),)),
                 ),
               ),
               SizedBox(height: 15,),
-
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text("Don't have an account?"),
+                  Text("Already have an account?"),
                   SizedBox(
                     width: 5,
                   ),
@@ -88,12 +90,12 @@ class _LoginPageState extends State<LoginPage> {
                     onTap: () {
                       Navigator.pushAndRemoveUntil(
                         context,
-                        MaterialPageRoute(builder: (context) => SignUpPage()),
+                        MaterialPageRoute(builder: (context) => LoginPage()),
                             (route) => false,
                       );
                     },
                     child: Text(
-                      "Sign Up",
+                      "Login",
                       style: TextStyle(
                         color: Colors.blue,
                         fontWeight: FontWeight.bold,
@@ -102,6 +104,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ],
               ),
+
             ],
           ),
         ),
@@ -109,29 +112,28 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  void _signIn() async {
+  void _signUp() async {
 
     setState(() {
-      _isSigning = true;
+      _isSigningUp = true;
     });
 
+    String username = _usernameController.text;
     String email = _emailController.text;
     String password = _passwordController.text;
 
-    User? user = await _auth.signInEmailAndPassword(email, password);
+    User? user = await _auth.signUpWithEmailAndPassword(email, password);
 
     setState(() {
-      _isSigning = false;
+      _isSigningUp = false;
     });
-
     if (user != null) {
-      showToast(message: "User is successfully signed in");
+      showToast(message: "User is successfully created");
       Navigator.push(context, new MaterialPageRoute(
           builder: (context) => new HomePage())
       );
     } else {
-      showToast(message: "some error occured");
+      showToast(message: "Some error happend");
     }
   }
 }
-
